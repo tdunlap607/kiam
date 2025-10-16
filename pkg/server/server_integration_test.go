@@ -23,6 +23,7 @@ import (
 	"github.com/uswitch/kiam/pkg/aws/sts"
 	"github.com/uswitch/kiam/pkg/k8s"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	kt "k8s.io/client-go/tools/cache/testing"
 )
 
@@ -40,6 +41,7 @@ func TestHealthReturnsOk(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer client.Close()
 
 	ctxCall, cancelCall := context.WithTimeout(ctx, time.Second*5)
 	defer cancelCall()
@@ -63,6 +65,7 @@ func TestRetriesUntilServerAvailable(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	defer gateway.Close()
 	server.Stop()
 
 	ok := make(chan string)
@@ -105,7 +108,7 @@ func newSystemAndListen(ctx context.Context) (*KiamServer, *kt.FakeControllerSou
 }
 
 func newClient(ctx context.Context) (*KiamGateway, error) {
-	cb := NewKiamGatewayBuilder().WithAddress(kServerAddress).WithDialOption(grpc.WithInsecure(), grpc.WithBlock()).WithMaxRetries(20).WithRetryInterval(time.Second)
+	cb := NewKiamGatewayBuilder().WithAddress(kServerAddress).WithDialOption(grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock()).WithMaxRetries(20).WithRetryInterval(time.Second)
 	return cb.Build(ctx)
 }
 
