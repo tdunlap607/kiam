@@ -24,7 +24,6 @@ import (
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	pb "github.com/uswitch/kiam/proto"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/balancer/roundrobin"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/security/advancedtls"
@@ -121,8 +120,7 @@ func (b *KiamGatewayBuilder) Build(ctx context.Context) (*KiamGateway, error) {
 				retry.WithBackoff(retry.BackoffLinear(b.retryInterval)),
 			),
 		)),
-		grpc.WithBalancerName(roundrobin.Name),
-		grpc.WithDisableServiceConfig(),
+		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`),
 		grpc.WithBlock(),
 		grpc.WithStreamInterceptor(grpc_prometheus.StreamClientInterceptor),
 	}

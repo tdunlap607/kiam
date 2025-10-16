@@ -41,7 +41,9 @@ type KiamGateway struct {
 // Close disconnects the connection
 func (g *KiamGateway) Close() {
 	g.conn.Close()
-	g.tlsConfig.Close()
+	if g.tlsConfig != nil {
+		g.tlsConfig.Close()
+	}
 }
 
 // GetRole returns the role for the identified Pod
