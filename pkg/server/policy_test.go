@@ -40,7 +40,7 @@ func TestRequestedRolePolicy(t *testing.T) {
 	policy := NewRequestingAnnotatedRolePolicy(f, arnResolver)
 	decision, err := policy.IsAllowedAssumeRole(context.Background(), "myrole", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -50,7 +50,7 @@ func TestRequestedRolePolicy(t *testing.T) {
 	policy = NewRequestingAnnotatedRolePolicy(f, arnResolver)
 	decision, err = policy.IsAllowedAssumeRole(context.Background(), "/myrole", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -80,7 +80,7 @@ func TestRequestedRolePolicyWithSlash(t *testing.T) {
 	policy := NewRequestingAnnotatedRolePolicy(f, arnResolver)
 	decision, err := policy.IsAllowedAssumeRole(context.Background(), "myrole", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -90,7 +90,7 @@ func TestRequestedRolePolicyWithSlash(t *testing.T) {
 	policy = NewRequestingAnnotatedRolePolicy(f, arnResolver)
 	decision, err = policy.IsAllowedAssumeRole(context.Background(), "/myrole", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -117,7 +117,7 @@ func TestNamespacePolicy(t *testing.T) {
 	policy := NewNamespacePermittedRoleNamePolicy(true, nf, arnResolver)
 	decision, err := policy.IsAllowedAssumeRole(context.Background(), "red_role", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -127,7 +127,7 @@ func TestNamespacePolicy(t *testing.T) {
 	policy = NewNamespacePermittedRoleNamePolicy(true, nf, arnResolver)
 	decision, err = policy.IsAllowedAssumeRole(context.Background(), "/red_role", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -158,7 +158,7 @@ func TestNamespacePolicyWithSlash(t *testing.T) {
 	policy := NewNamespacePermittedRoleNamePolicy(true, nf, arnResolver)
 	decision, err := policy.IsAllowedAssumeRole(context.Background(), "red_role", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
@@ -168,7 +168,7 @@ func TestNamespacePolicyWithSlash(t *testing.T) {
 	policy = NewNamespacePermittedRoleNamePolicy(true, nf, arnResolver)
 	decision, err = policy.IsAllowedAssumeRole(context.Background(), "/red_role", p)
 	if err != nil {
-		t.Fatalf(err.Error())
+		t.Fatal(err)
 	}
 
 	if !decision.IsAllowed() {
